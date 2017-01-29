@@ -6,6 +6,6 @@ package com.codeheadsystems.shash;
 @FunctionalInterface
 public interface HashAlgorithm {
 
-    byte[] hash(byte[] bytes, byte[] salt);
+    byte[] hash(byte[] salt, byte[] bytes);
 
 }

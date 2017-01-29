@@ -47,9 +47,24 @@ public class HasherImpl implements Hasher {
     }
 
     @Override
-    public boolean isSame(HashHolder hashedBytes, byte[] payload) {
-        byte[] salt = hashedBytes.getSalt();
-        byte[] previousHash = hashedBytes.getHash();
+    public boolean isSame(HashHolder hashHolder, byte[] payload) {
+        byte[] salt = hashHolder.getSalt();
+        byte[] previousHash = hashHolder.getHash();
+        return isSame(salt, previousHash, payload);
+    }
+
+    @Override
+    public boolean isSame(HashHolder hashHolder, String payload) {
+        return isSame(hashHolder, payload.getBytes(CHARSET));
+    }
+
+    @Override
+    public boolean isSame(byte[] salt, byte[] hash, String payload) {
+        return isSame(salt, hash, payload.getBytes(CHARSET));
+    }
+
+    @Override
+    public boolean isSame(byte[] salt, byte[] previousHash, byte[] payload) {
         byte[] payloadHash = hashAlgorithm.hash(payload, salt);
 
         // now we generate 2 hashes from these, to make it harder for attacks to occur if this code becomes
@@ -68,10 +83,5 @@ public class HasherImpl implements Hasher {
             same = payloadHash[i] == previousHash[i] && same; // TODO: optimizing compiler may make this faster then we want.
         }
         return same;
-    }
-
-    @Override
-    public boolean isSame(HashHolder hashedBytes, String payload) {
-        return isSame(hashedBytes, payload.getBytes(CHARSET));
     }
 }

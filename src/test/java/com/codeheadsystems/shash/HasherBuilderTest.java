@@ -3,6 +3,8 @@ package com.codeheadsystems.shash;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 import static com.codeheadsystems.shash.StringManipulator.toBytes;
@@ -23,9 +25,48 @@ public class HasherBuilderTest {
         String text = "blah";
         HashHolder hash = hasher.hash(text);
         assertTrue(hasher.isSame(hash, text));
+        assertTrue(hasher.isSame(hash.getSalt(), hash.getHash(), text));
         assertNotSame(hash, toBytes(text));
     }
 
+    private byte[] digest(byte[] salt, byte[] hash) {
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            md5.update(salt);
+            return md5.digest(hash);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Test
+    public void testCustomizeHasher() {
+        Hasher hasher = hasherBuilder
+                .saltSize(16)
+                .hashAlgorithm((bytes, salt) -> this.digest(salt, bytes)).build();
+        String text = "blah";
+        HashHolder hash = hasher.hash(text);
+        assertTrue(hasher.isSame(hash, text));
+        assertFalse(hasher.isSame(hash, text + "1"));
+        assertNotSame(hash, toBytes(text));
+    }
+
+    @Test
+    public void testCustomSaltSize() {
+        Hasher hasher = hasherBuilder
+                .saltSize(8)
+                .hashAlgorithm(SupportedHashAlgorithm.getMinSCryptAlgo())
+                .build();
+        String text = "blah";
+        HashHolder hash = hasher.hash(text);
+        assertTrue(hasher.isSame(hash, text));
+        assertFalse(hasher.isSame(hash, text + "1"));
+        assertEquals(8, hash.getSalt().length);
+    }
+
+    /**
+     * This is a slow test because of the default SCryptAlgo in play
+     */
     @Test
     public void testDifferentHashersNotTheSame() {
         Hasher hasher1 = hasherBuilder.hashAlgorithm(SupportedHashAlgorithm.getMinSCryptAlgo()).build();

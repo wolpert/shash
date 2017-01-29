@@ -20,7 +20,7 @@ public class SupportedHashAlgorithm {
      * @return
      */
     public static HashAlgorithm getSCryptAlgo() {
-        return ((bytes, salt) -> SCrypt.generate(bytes, salt, SCRYPT_ITERATIONS, R, P, DKLEN));
+        return ((salt, bytes) -> SCrypt.generate(bytes, salt, SCRYPT_ITERATIONS, R, P, DKLEN));
     }
 
     /**
@@ -29,7 +29,7 @@ public class SupportedHashAlgorithm {
      * @return
      */
     public static HashAlgorithm getMinSCryptAlgo() {
-        return ((bytes, salt) -> SCrypt.generate(bytes, salt, MIN_SCRYPT_ITERATIONS, R, P, DKLEN));
+        return ((salt, bytes) -> SCrypt.generate(bytes, salt, MIN_SCRYPT_ITERATIONS, R, P, DKLEN));
     }
 
 }

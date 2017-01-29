@@ -33,20 +33,42 @@ public interface Hasher {
     /**
      * Compares a previously hashed set of bytes with a new payload. The salt is taken from the hashedBytes.
      *
-     * @param hashedBytes the previously hashed word with salt.
-     * @param payload The payload to hash with the salt and check against the hashedBytes given
+     * @param hashHolder the previously hashed word with salt.
+     * @param payload    The payload to hash with the salt and check against the hashedBytes given
      * @return boolean to say if they are the same or not
      */
-    boolean isSame(HashHolder hashedBytes, byte[] payload);
+    boolean isSame(HashHolder hashHolder, byte[] payload);
 
     /**
      * Compares a previously hashed set of bytes with a new payload. The salt is taken from the hashedBytes.
      * Note this will convert the payload to a byte[] in a consistent manner.
      *
-     * @param hashedBytes the previously hashed word with salt.
-     * @param payload The payload to hash with the salt and check against the hashedBytes given
+     * @param hashHolder the previously hashed word with salt.
+     * @param payload    The payload to hash with the salt and check against the hashedBytes given
      * @return boolean to say if they are the same or not
      */
-    boolean isSame(HashHolder hashedBytes, String payload);
+    boolean isSame(HashHolder hashHolder, String payload);
+
+    /**
+     * Compares a previously hashed set of bytes with a new payload.
+     * Note this will convert the payload to a byte[] in a consistent manner.
+     *
+     * @param salt         that was used originally to generate the hash
+     * @param previousHash generated from the original text/bytes
+     * @param payload      The incoming payload you want to check
+     * @return boolean to say if they are the same or not
+     */
+    boolean isSame(byte[] salt, byte[] previousHash, String payload);
+
+    /**
+     * Compares a previously hashed set of bytes with a new payload.
+     * Note this will convert the payload to a byte[] in a consistent manner.
+     *
+     * @param salt         that was used originally to generate the hash
+     * @param previousHash generated from the original text/bytes
+     * @param payload      The incoming payload you want to check
+     * @return boolean to say if they are the same or not
+     */
+    boolean isSame(byte[] salt, byte[] previousHash, byte[] payload);
 
 }
