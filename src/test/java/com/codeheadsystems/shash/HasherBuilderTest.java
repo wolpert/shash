@@ -52,6 +52,19 @@ public class HasherBuilderTest {
     }
 
     @Test
+    public void noSaltTestLikeForHMac() {
+        Hasher hasher = hasherBuilder
+                .saltSize(0)
+                .hashAlgorithm((bytes, salt) -> this.digest(salt, bytes)).build();
+        String text = "blah";
+        HashHolder hash = hasher.hash(text);
+        assertTrue(hasher.isSame(hash, text));
+        assertFalse(hasher.isSame(hash, text + "1"));
+        assertNotSame(hash, toBytes(text));
+        assertEquals(0, hash.getSalt().length);
+    }
+
+    @Test
     public void testCustomSaltSize() {
         Hasher hasher = hasherBuilder
                 .saltSize(8)

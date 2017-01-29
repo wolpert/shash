@@ -8,6 +8,9 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
 group = "com.codeheadsystems"
 version = '1.0.0'
 
@@ -20,6 +23,72 @@ ext {
     logbackVersion = "1.1.7"
     bouncyVersion = "1.56"
 }
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+    archivesBaseName = "shash"
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment ->
+                signing.signPom(deployment)
+            }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'Codehead Secure Hashing Library'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'A set of libraries that can be used to encrypt content securely.'
+                url 'https://github.com/wolpert/crypto'
+
+                scm {
+                    connection 'scm:https://github.com/wolpert/crypto.git'
+                    developerConnection 'scm:git@github.com:wolpert/crypto.git'
+                    url 'https://github.com/wolpert/crypto/'
+                }
+
+                licenses {
+                    license {
+                        name 'The BSD License'
+                        url 'https://opensource.org/licenses/BSD-3-Clause'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'wolpert'
+                        name 'Ned Wolpert'
+                        email 'ned.wolpert@codeheadsystems.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 repositories {
     jcenter()

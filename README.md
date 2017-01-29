@@ -28,7 +28,16 @@ You can easily set your own hashing algorithm if you are so inclined.
 
      Hasher hasher = hasherBuilder
                 .saltSize(16)
-                .hashAlgorithm((bytes, salt) -> myDigester.digest(salt, bytes))
+                .hashAlgorithm((salt, bytes) -> myDigester.digest(salt, bytes))
                 .randomProvider(Random::new) // Really, don't do this.
                 .build();
 
+## Gradle ##
+    compile "com.codeheadsystems:shash:1.0.0"
+
+## Maven ##
+    <dependency>
+      <groupId>com.codeheadsystems</groupId>
+      <artifactId>shash</artifactId>
+      <version>1.0.0</version>
+    </dependency>
