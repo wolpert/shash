@@ -10,18 +10,18 @@ public interface Hasher {
      * Salt is automatically generated.
      *
      * @param bytes from the payload.
-     * @return byte[] of a fixed size depending on how this was created, plus the salt.
+     * @return HashHolder of a fixed size depending on how this was created, plus the salt.
      */
-    byte[] hash(byte[] bytes);
+    HashHolder hash(byte[] bytes);
 
     /**
      * Will hash the bytes given and return a 'sized' salted hash depending on the algorithm picked on creation.
      * Salt is automatically generated.
      *
      * @param hashingWord for the payload, converted to bytes in a consistent way for this hasher.
-     * @return byte[] of a fixed size depending on how this was created, plus the salt.
+     * @return HashHolder of a fixed size depending on how this was created, plus the salt.
      */
-    byte[] hash(String hashingWord);
+    HashHolder hash(String hashingWord);
 
     /**
      * Provides access to a salt for this specific hasher.
@@ -37,7 +37,7 @@ public interface Hasher {
      * @param payload The payload to hash with the salt and check against the hashedBytes given
      * @return boolean to say if they are the same or not
      */
-    boolean isSame(byte[] hashedBytes, byte[] payload);
+    boolean isSame(HashHolder hashedBytes, byte[] payload);
 
     /**
      * Compares a previously hashed set of bytes with a new payload. The salt is taken from the hashedBytes.
@@ -47,6 +47,6 @@ public interface Hasher {
      * @param payload The payload to hash with the salt and check against the hashedBytes given
      * @return boolean to say if they are the same or not
      */
-    boolean isSame(byte[] hashedBytes, String payload);
+    boolean isSame(HashHolder hashedBytes, String payload);
 
 }

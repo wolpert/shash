@@ -1,5 +1,7 @@
 package com.codeheadsystems.shash;
 
+import org.bouncycastle.util.encoders.Hex;
+
 import java.nio.charset.Charset;
 
 public class StringManipulator {
@@ -14,12 +16,12 @@ public class StringManipulator {
         return new String(bytes, CHARSET);
     }
 
-    public static String toHex(byte[] hex){
-        return null;
+    public static String toHex(byte[] hex) {
+        return Hex.toHexString(hex);
     }
 
-    public static byte[] fromHex(String string){
-        return null;
+    public static byte[] fromHex(String string) {
+        return Hex.decode(string);
     }
 
 }
