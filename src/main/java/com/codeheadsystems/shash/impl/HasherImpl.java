@@ -49,11 +49,23 @@ public class HasherImpl implements Hasher {
     @Override
     public boolean isSame(HashHolder hashedBytes, byte[] payload) {
         byte[] salt = hashedBytes.getSalt();
+        byte[] previousHash = hashedBytes.getHash();
         byte[] payloadHash = hashAlgorithm.hash(payload, salt);
+
+        // now we generate 2 hashes from these, to make it harder for attacks to occur if this code becomes
+        // optimized by the compiler.
+        byte[] h1 = hashAlgorithm.hash(previousHash, salt);
+        byte[] h2 = hashAlgorithm.hash(payloadHash, salt);
+
+        // this should never happen, but we have to check
+        if (h1.length != h2.length) {
+            logger.warn("Something wicked this way comes: hash gave 2 difference sizes... should never happen");
+            return false;
+        }
+
         boolean same = true;
-        byte[] previouslyHash = hashedBytes.getHash();
-        for (int i = saltSize; i < previouslyHash.length; i++) {
-            same = payloadHash[i - saltSize] == previouslyHash[i] && same; // TODO: optimizing compiler may make this faster then we want.
+        for (int i = 0; i < previousHash.length; i++) {
+            same = payloadHash[i] == previousHash[i] && same; // TODO: optimizing compiler may make this faster then we want.
         }
         return same;
     }
