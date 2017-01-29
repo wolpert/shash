@@ -20,7 +20,7 @@ public class SupportedHashAlgorithm {
      * @return an instance of HashAlgorithm that supports strong SCrypt hashing
      */
     public static HashAlgorithm getSCryptAlgo() {
-        return ((salt, bytes) -> SCrypt.generate(bytes, salt, SCRYPT_ITERATIONS, R, P, DKLEN));
+        return ((salt, bytes) -> SCrypt.generate(bytes, salt, SCRYPT_ITERATIONS, R, P, DKLEN)); // bytes before salt here
     }
 
     /**
@@ -29,7 +29,7 @@ public class SupportedHashAlgorithm {
      * @return an instance of HashAlgorithm that supports fast SCrypt hashing, but is not as strong (via iterations)
      */
     public static HashAlgorithm getMinSCryptAlgo() {
-        return ((salt, bytes) -> SCrypt.generate(bytes, salt, MIN_SCRYPT_ITERATIONS, R, P, DKLEN));
+        return ((salt, bytes) -> SCrypt.generate(bytes, salt, MIN_SCRYPT_ITERATIONS, R, P, DKLEN));  // bytes before salt here
     }
 
 }

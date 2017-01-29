@@ -7,6 +7,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
+import static com.codeheadsystems.shash.StringManipulator.CHARSET;
 import static com.codeheadsystems.shash.StringManipulator.toBytes;
 import static org.junit.Assert.*;
 
@@ -27,6 +28,21 @@ public class HasherBuilderTest {
         assertTrue(hasher.isSame(hash, text));
         assertTrue(hasher.isSame(hash.getSalt(), hash.getHash(), text));
         assertNotSame(hash, toBytes(text));
+
+        assertTrue(isSame(hash.getHash(), hasher.hash(hash.getSalt(), text)));
+    }
+
+    @Test
+    public void testHashOfWebsite() {
+        Hasher hasher = hasherBuilder.hashAlgorithm(SupportedHashAlgorithm.getMinSCryptAlgo()).build();
+        String text = "blah";
+        byte[] salt = "www.google.com".getBytes(CHARSET);
+        byte[] hash = hasher.hash(salt, text);
+
+        assertTrue(isSame(hash, hasher.hash(salt, text)));
+        System.out.println("Hash: " + StringManipulator.toHex(hash));
+        System.out.println("String: " + StringManipulator.toString(hash));
+        System.out.println("Base64: " + StringManipulator.toBase64(hash));
     }
 
     private byte[] digest(byte[] salt, byte[] hash) {
@@ -39,6 +55,17 @@ public class HasherBuilderTest {
         }
     }
 
+    private boolean isSame(byte[] a1, byte[] a2) {
+        if (a1.length != a2.length) {
+            return false;
+        }
+        for (int i = 0; i < a1.length; i++) {
+            if (a1[i] != a2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
     @Test
     public void testCustomizeHasher() {
         Hasher hasher = hasherBuilder

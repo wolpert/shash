@@ -1,7 +1,8 @@
 package com.codeheadsystems.shash;
 
 /**
- * Provides access to standard hasher structure
+ * Provides access to standard hasher structure. Really the Hasher just wraps the hashing algorithm with
+ * useful stuff. The interface exists only so that you can mock it as needed.
  */
 public interface Hasher {
 
@@ -22,6 +23,27 @@ public interface Hasher {
      * @return HashHolder of a fixed size depending on how this was created, plus the salt.
      */
     HashHolder hash(String hashingWord);
+
+    /**
+     * Will hash the bytes given and return a 'sized' salted hash depending on the algorithm picked on creation.
+     * Salt is automatically generated.
+     *
+     * @param salt         that was used originally to generate the hash
+     * @param bytesToHash  bytes that you want to hash and see what you get.
+     * @return bytes[] that are produced by this hashing technique
+     */
+    byte[] hash(byte[] salt, byte[] bytesToHash);
+
+    /**
+     * Will hash the bytes given and return a 'sized' salted hash depending on the algorithm picked on creation.
+     * Salt is automatically generated.
+     *
+     * @param salt         that was used originally to generate the hash
+     * @param hashingWord  The payload to hash with the salt.
+     * @return bytes[] that are produced by this hashing technique
+     */
+
+    byte[] hash(byte[] salt, String hashingWord);
 
     /**
      * Provides access to a salt for this specific hasher.

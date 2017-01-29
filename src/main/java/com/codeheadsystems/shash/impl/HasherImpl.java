@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import static com.codeheadsystems.shash.StringManipulator.CHARSET;
 import static com.codeheadsystems.shash.StringManipulator.toBytes;
-import static java.lang.System.arraycopy;
 
 public class HasherImpl implements Hasher {
 
@@ -27,7 +26,8 @@ public class HasherImpl implements Hasher {
     public HashHolder hash(byte[] bytes) {
         byte[] salt = generateSalt();
         logger.trace("hashing({},{},{})", bytes.length, salt.length, hashAlgorithm.getClass());
-        return new HashHolder(salt, hashAlgorithm.hash(bytes, salt));
+        byte[] hash = hash(salt, bytes);
+        return new HashHolder(salt, hash);
     }
 
     @Override
@@ -35,10 +35,14 @@ public class HasherImpl implements Hasher {
         return hash(toBytes(hashingWord));
     }
 
-    private byte[] getSalt(byte[] hashedBytes) {
-        byte[] salt = new byte[saltSize];
-        arraycopy(hashedBytes, 0, salt, 0, saltSize);
-        return salt;
+    @Override
+    public byte[] hash(byte[] salt, byte[] bytesToHash) {
+        return hashAlgorithm.hash(salt, bytesToHash);
+    }
+
+    @Override
+    public byte[] hash(byte[] salt, String hashingWord) {
+        return hash(salt, hashingWord.getBytes(CHARSET));
     }
 
     @Override
@@ -59,18 +63,18 @@ public class HasherImpl implements Hasher {
     }
 
     @Override
-    public boolean isSame(byte[] salt, byte[] hash, String payload) {
-        return isSame(salt, hash, payload.getBytes(CHARSET));
+    public boolean isSame(byte[] salt, byte[] previousHash, String payload) {
+        return isSame(salt, previousHash, payload.getBytes(CHARSET));
     }
 
     @Override
     public boolean isSame(byte[] salt, byte[] previousHash, byte[] payload) {
-        byte[] payloadHash = hashAlgorithm.hash(payload, salt);
+        byte[] payloadHash = hashAlgorithm.hash(salt, payload);
 
         // now we generate 2 hashes from these, to make it harder for attacks to occur if this code becomes
         // optimized by the compiler.
-        byte[] h1 = hashAlgorithm.hash(previousHash, salt);
-        byte[] h2 = hashAlgorithm.hash(payloadHash, salt);
+        byte[] h1 = hashAlgorithm.hash(salt, previousHash);
+        byte[] h2 = hashAlgorithm.hash(salt, payloadHash);
 
         // this should never happen, but we have to check
         if (h1.length != h2.length) {
