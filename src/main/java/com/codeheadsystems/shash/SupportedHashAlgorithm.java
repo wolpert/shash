@@ -19,8 +19,21 @@ public class SupportedHashAlgorithm {
      *
      * @return an instance of HashAlgorithm that supports strong SCrypt hashing
      */
-    public static HashAlgorithm getSCryptAlgo() {
+    public static HashAlgorithm getMaxSCryptAlgo() {
         return ((salt, bytes) -> SCrypt.generate(bytes, salt, SCRYPT_ITERATIONS, R, P, DKLEN)); // bytes before salt here
+    }
+
+    /**
+     * Returns a SCrypt generator that uses 2^20 iterations, r=8, p=1 and dkLen = 32
+     *
+     * @param iterations the number of iterations to use. Must be &gt;= 2^14
+     * @return an instance of HashAlgorithm that supports strong SCrypt hashing
+     */
+    public static HashAlgorithm getSCryptAlgo(final int iterations) {
+        if (iterations < MIN_SCRYPT_ITERATIONS) {
+            throw new IllegalArgumentException("Min number of iterations allowed is " + MIN_SCRYPT_ITERATIONS);
+        }
+        return ((salt, bytes) -> SCrypt.generate(bytes, salt, iterations, R, P, DKLEN)); // bytes before salt here
     }
 
     /**

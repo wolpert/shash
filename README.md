@@ -48,11 +48,11 @@ You can easily set your own hashing algorithm if you are so inclined.
                 .build();
 
 ## Gradle ##
-    compile "com.codeheadsystems:shash:1.0.1"
+    compile "com.codeheadsystems:shash:1.0.2"
 
 ## Maven ##
     <dependency>
       <groupId>com.codeheadsystems</groupId>
       <artifactId>shash</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.2</version>
     </dependency>

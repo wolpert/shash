@@ -110,7 +110,7 @@ public class HasherBuilderTest {
     @Test
     public void testDifferentHashersNotTheSame() {
         Hasher hasher1 = hasherBuilder.hashAlgorithm(SupportedHashAlgorithm.getMinSCryptAlgo()).build();
-        Hasher hasher2 = hasherBuilder.hashAlgorithm(SupportedHashAlgorithm.getSCryptAlgo()).build();
+        Hasher hasher2 = hasherBuilder.hashAlgorithm(SupportedHashAlgorithm.getMaxSCryptAlgo()).build();
         String text = "blah";
         HashHolder hash = hasher1.hash(text);
         assertTrue(hasher1.isSame(hash, text));
