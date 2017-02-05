@@ -24,6 +24,15 @@ public class SupportedHashAlgorithm {
     }
 
     /**
+     * Returns a SCrypt generator that uses the max SCryptAlgo method
+     *
+     * @return an instance of HashAlgorithm that supports strong SCrypt hashing
+     */
+    public static HashAlgorithm getSCryptAlgo() {
+        return getMaxSCryptAlgo();
+    }
+
+    /**
      * Returns a SCrypt generator that uses 2^20 iterations, r=8, p=1 and dkLen = 32
      *
      * @param iterations the number of iterations to use. Must be &gt;= 2^14

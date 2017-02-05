@@ -1,5 +1,6 @@
 package com.codeheadsystems.shash;
 
+import com.codeheadsystems.shash.text.StringManipulator;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;

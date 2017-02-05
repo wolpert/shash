@@ -1,14 +1,12 @@
 package com.codeheadsystems.shash;
 
 import com.codeheadsystems.shash.impl.HasherImpl;
-import com.codeheadsystems.shash.impl.RandomProvider;
+import com.codeheadsystems.shash.random.RandomProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Random;
 import java.util.function.Supplier;
-
-import static java.util.Objects.requireNonNull;
 
 public class HasherBuilder {
 
@@ -39,7 +37,9 @@ public class HasherBuilder {
     }
 
     public Hasher build() {
-        requireNonNull(hashAlgorithm);
+        if (hashAlgorithm == null) {
+            hashAlgorithm(SupportedHashAlgorithm.getSCryptAlgo());
+        }
         if (randomProvider == null) {
             randomProvider = RandomProvider.generate();
         }

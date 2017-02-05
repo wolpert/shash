@@ -1,6 +1,6 @@
-package com.codehead.systems.shash.impl;
+package com.codeheadsystems.shash.random;
 
-import com.codeheadsystems.shash.impl.RandomProvider;
+import com.codeheadsystems.shash.random.RandomProvider;
 import org.junit.Before;
 import org.junit.Test;
 

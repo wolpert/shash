@@ -1,6 +1,8 @@
 package com.codeheadsystems.shash;
 
-import static com.codeheadsystems.shash.StringManipulator.toHex;
+import com.codeheadsystems.shash.text.StringManipulator;
+
+import static com.codeheadsystems.shash.text.StringManipulator.toHex;
 import static java.util.Objects.requireNonNull;
 
 public class HashHolder {

@@ -1,4 +1,4 @@
-package com.codeheadsystems.shash.impl;
+package com.codeheadsystems.shash.random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,5 +1,6 @@
 package com.codeheadsystems.shash;
 
+import com.codeheadsystems.shash.text.StringManipulator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,8 +8,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
-import static com.codeheadsystems.shash.StringManipulator.CHARSET;
-import static com.codeheadsystems.shash.StringManipulator.toBytes;
+import static com.codeheadsystems.shash.text.StringManipulator.CHARSET;
+import static com.codeheadsystems.shash.text.StringManipulator.toBytes;
 import static org.junit.Assert.*;
 
 public class HasherBuilderTest {
@@ -66,6 +67,7 @@ public class HasherBuilderTest {
         }
         return true;
     }
+
     @Test
     public void testCustomizeHasher() {
         Hasher hasher = hasherBuilder
@@ -128,6 +130,23 @@ public class HasherBuilderTest {
         HashHolder hash = hasher.hash(text);
         assertFalse(hasher.isSame(hash, text + "1"));
     }
+
+    @Test
+    public void testDifferentSakt() {
+        Hasher hasher = hasherBuilder.hashAlgorithm(SupportedHashAlgorithm.getMinSCryptAlgo()).build();
+        String text = "blah";
+        byte[] salt1 = hasher.generateSalt();
+        byte[] salt2 = hasher.generateSalt();
+        byte[] hash1 = hasher.hash(salt1, text);
+        byte[] hash2 = hasher.hash(salt2, text);
+        assertFalse("This should not have happened. Run again?", isSame(salt1, salt2));
+        assertFalse("This should not have happened. Run again?", isSame(hash1, hash2));
+        assertTrue(hasher.isSame(salt1, hash1, text));
+        assertTrue(hasher.isSame(salt2, hash2, text));
+        assertFalse(hasher.isSame(salt1, hash2, text));
+        assertFalse(hasher.isSame(salt2, hash1, text));
+    }
+
 
     @Test
     public void testByteHashing() {

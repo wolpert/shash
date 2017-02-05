@@ -1,4 +1,4 @@
-package com.codeheadsystems.shash;
+package com.codeheadsystems.shash.text;
 
 import org.bouncycastle.util.encoders.Hex;
 

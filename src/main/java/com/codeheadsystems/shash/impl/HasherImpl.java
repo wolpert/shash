@@ -3,11 +3,12 @@ package com.codeheadsystems.shash.impl;
 import com.codeheadsystems.shash.HashAlgorithm;
 import com.codeheadsystems.shash.HashHolder;
 import com.codeheadsystems.shash.Hasher;
+import com.codeheadsystems.shash.random.RandomProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.codeheadsystems.shash.StringManipulator.CHARSET;
-import static com.codeheadsystems.shash.StringManipulator.toBytes;
+import static com.codeheadsystems.shash.text.StringManipulator.CHARSET;
+import static com.codeheadsystems.shash.text.StringManipulator.toBytes;
 
 public class HasherImpl implements Hasher {
 
