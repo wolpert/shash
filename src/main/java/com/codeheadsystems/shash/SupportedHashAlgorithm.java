@@ -4,11 +4,11 @@ import org.bouncycastle.crypto.generators.SCrypt;
 
 public class SupportedHashAlgorithm {
 
-    private static final int SCRYPT_ITERATIONS = (int) Math.pow(2, 20);
-    private static final int MIN_SCRYPT_ITERATIONS = (int) Math.pow(2, 14);
+    private static final int SCRYPT_ITERATIONS = (int) Math.pow(2, 20);  // 1048576
+    private static final int MIN_SCRYPT_ITERATIONS = (int) Math.pow(2, 14); // 16384
     private static final int P = 1;
     private static final int R = 8;
-    private static final int DKLEN = 32;
+    private static final int DKLEN = 32; // 256-bit
 
     /*
      * SCRYPT NOTES: Default p=1, dkLen=32 (bytes) r=8. Iterations min is 2^14, 2^20 is suggested

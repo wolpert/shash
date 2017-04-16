@@ -1,4 +1,4 @@
-package com.codeheadsystems.shash;
+package com.codeheadsystems.shash.text;
 
 import com.codeheadsystems.shash.text.StringManipulator;
 import org.junit.Test;
